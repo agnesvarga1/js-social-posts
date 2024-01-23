@@ -60,6 +60,14 @@ const posts = [
     created: "2021-03-05",
   },
 ];
+
+////Modifica data nel obj
+posts.forEach((post) => {
+  const temporaryArr = post.created.split("-");
+
+  const americanFormat = temporaryArr.reverse();
+  post.created = americanFormat.join("-");
+});
 const mainContainerHTml = document.querySelector("#container");
 
 posts.forEach((postItem, index) => {
