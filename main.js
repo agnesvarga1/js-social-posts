@@ -6,7 +6,7 @@ const posts = [
     media: "https://unsplash.it/600/300?image=171",
     author: {
       name: "Phil Mangione",
-      image: "https://unsplash.it/300/300?image=15",
+      image: null,
     },
     likes: 80,
     created: "2021-06-25",
@@ -61,23 +61,43 @@ const posts = [
   },
 ];
 
+//"https://unsplash.it/300/300?image=15"
+
 ////Modifica data nel obj
+
+let firstLetter, secondLetter;
 posts.forEach((post) => {
   const temporaryArr = post.created.split("-");
 
   const americanFormat = temporaryArr.reverse();
   post.created = americanFormat.join("-");
+  if (post.author.image == null) {
+    arrNameLastName = post.author.name.split(" ");
+    arrNameLastName.forEach((nameItem, index) => {
+      if (index === 0) {
+        firstLetter = nameItem.charAt(0);
+      } else {
+        secondLetter = nameItem.charAt(0);
+        const test = firstLetter + secondLetter;
+        const keyName = "initials";
+        post[keyName] = test;
+      }
+    });
+  }
 });
-const mainContainerHTml = document.querySelector("#container");
 
-posts.forEach((postItem, index) => {
+const mainContainerHTml = document.querySelector("#container");
+console.log(posts);
+posts.forEach((postItem) => {
   mainContainerHTml.innerHTML += `<div class="post">
     <div class="post__header">
         <div class="post-meta">
-            <div class="post-meta__icon">
-                <img class="profile-pic" src="${
-                  postItem.author.image
-                }" alt="Phil Mangione">
+            <div class="post-meta__icon"> 
+            ${
+              postItem.author.image !== null
+                ? `  <img class="profile-pic"  src="${postItem.author.image}" alt="${postItem.author.name}"></img> `
+                : `<div class="profile-pic-default"><span>${postItem.initials}</span></div>`
+            } 
             </div>
             <div class="post-meta__data">
                 <div class="post-meta__author">${postItem.author.name}</div>
