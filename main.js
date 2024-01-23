@@ -15,7 +15,7 @@ const posts = [
     id: 2,
     content:
       "Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.",
-    media: "https://unsplash.it/600/400?image=112",
+    // media: "https://unsplash.it/600/400?image=112",
     author: {
       name: "Sofia Perlari",
       image: "https://unsplash.it/300/300?image=10",
@@ -60,34 +60,52 @@ const posts = [
     created: "2021-03-05",
   },
 ];
+const mainContainerHTml = document.querySelector("#container");
 
-// <div class="post">
-//             <div class="post__header">
-//                 <div class="post-meta">
-//                     <div class="post-meta__icon">
-//                         <img class="profile-pic" src="https://unsplash.it/300/300?image=15" alt="Phil Mangione">
-//                     </div>
-//                     <div class="post-meta__data">
-//                         <div class="post-meta__author">Phil Mangione</div>
-//                         <div class="post-meta__time">4 mesi fa</div>
-//                     </div>
-//                 </div>
-//             </div>
-//             <div class="post__text">Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.</div>
-//             <div class="post__image">
-//                 <img src="https://unsplash.it/600/300?image=171" alt="">
-//             </div>
-//             <div class="post__footer">
-//                 <div class="likes js-likes">
-//                     <div class="likes__cta">
-//                         <a class="like-button  js-like-button" href="#" data-postid="1">
-//                             <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-//                             <span class="like-button__label">Mi Piace</span>
-//                         </a>
-//                     </div>
-//                     <div class="likes__counter">
-//                         Piace a <b id="like-counter-1" class="js-likes-counter">80</b> persone
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
+posts.forEach((postItem, index) => {
+  mainContainerHTml.innerHTML += `<div class="post">
+    <div class="post__header">
+        <div class="post-meta">
+            <div class="post-meta__icon">
+                <img class="profile-pic" src="${
+                  postItem.author.image
+                }" alt="Phil Mangione">
+            </div>
+            <div class="post-meta__data">
+                <div class="post-meta__author">${postItem.author.name}</div>
+                <div class="post-meta__time">${postItem.created}</div>
+            </div>
+        </div>
+    </div>
+    <div class="post__text">${postItem.content}</div>
+    <div class="post__image">
+       ${postItem.media ? ` <img src="${postItem.media}"` : ``}     
+    </div>
+    <div class="post__footer">
+        <div class="likes js-likes">
+            <div class="likes__cta">
+                <a class="like-button  js-like-button" href="#" data-postid="${
+                  postItem.id
+                }">
+                    <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                    <span class="like-button__label">Mi Piace</span>
+                </a>
+            </div>
+            <div class="likes__counter">
+                Piace a <b id="like-counter-1" class="js-likes-counter">${
+                  postItem.likes
+                }</b> persone
+            </div>
+        </div>
+    </div>
+</div>
+`;
+});
+
+const allLikeBtns = document.querySelectorAll(".js-like-button");
+
+allLikeBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    btn.classList.toggle("like-button--liked");
+  });
+});
