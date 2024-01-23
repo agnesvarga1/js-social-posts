@@ -92,30 +92,30 @@ posts.forEach((postItem, index) => {
                 </a>
             </div>
             <div class="likes__counter">
-                Piace a <b id="like-counter-1" class="js-likes-counter">${
-                  postItem.likes
-                }</b> persone
+                Piace a <b id="like-counter-${
+                  postItem.id
+                }" class="js-likes-counter">${postItem.likes}</b> persone
             </div>
         </div>
     </div>
 </div>
 `;
 });
-console.log("Before click:", posts);
+
 const allLikeBtns = document.querySelectorAll(".js-like-button");
 const likedPostIds = [];
 allLikeBtns.forEach((btn) => {
   let btnClicked = false;
   btn.addEventListener("click", () => {
     postIdFrom = btn.getAttribute("data-postId");
+    postIdFrom = Number(postIdFrom);
     if (btnClicked === false) {
       btnClicked = true;
       btn.classList.add("like-button--liked");
       likedPostIds.push(postIdFrom);
-
-      addLike();
+      addLikes();
     } else {
-      removeLike();
+      removeLikes();
       btnClicked = false;
       btn.classList.remove("like-button--liked");
       let index = likedPostIds.indexOf(postIdFrom);
@@ -124,25 +124,22 @@ allLikeBtns.forEach((btn) => {
   });
 });
 
-const addLike = () => {
-  likedPostIds.forEach((item, index) => {
-    posts.forEach((post) => {
-      if (index + 1 === post.id) {
-        post.likes = post.likes + 1;
-      }
-    });
+const addLikes = () => {
+  posts.forEach((post) => {
+    if (likedPostIds.includes(post.id)) {
+      post.likes = post.likes + 1;
+      let newLikeEl = document.getElementById(`like-counter-${post.id}`);
+      newLikeEl.innerText = post.likes;
+    }
   });
-  console.log("After addFN:", posts);
 };
 
-const removeLike = () => {
-  likedPostIds.forEach((item, index) => {
-    posts.forEach((post) => {
-      if (index + 1 === post.id) {
-        post.likes = post.likes - 1;
-      }
-    });
+const removeLikes = () => {
+  posts.forEach((post) => {
+    if (likedPostIds.includes(post.id)) {
+      post.likes = post.likes - 1;
+      let newLikeEl = document.getElementById(`like-counter-${post.id}`);
+      newLikeEl.innerText = post.likes;
+    }
   });
-
-  console.log("After remove", posts);
 };
