@@ -112,6 +112,7 @@ posts.forEach((postItem, index) => {
 
 const allLikeBtns = document.querySelectorAll(".js-like-button");
 const likedPostIds = [];
+const arrPerDislike = [];
 allLikeBtns.forEach((btn) => {
   let btnClicked = false;
   btn.addEventListener("click", () => {
@@ -121,13 +122,12 @@ allLikeBtns.forEach((btn) => {
       btnClicked = true;
       btn.classList.add("like-button--liked");
       likedPostIds.push(postIdFrom);
+      arrPerDislike.push(postIdFrom);
       addLikes();
     } else {
       removeLikes();
       btnClicked = false;
       btn.classList.remove("like-button--liked");
-      let index = likedPostIds.indexOf(postIdFrom);
-      likedPostIds.splice(index, 1);
     }
   });
 });
@@ -138,16 +138,20 @@ const addLikes = () => {
       post.likes = post.likes + 1;
       let newLikeEl = document.getElementById(`like-counter-${post.id}`);
       newLikeEl.innerText = post.likes;
+      let index = likedPostIds.indexOf(postIdFrom);
+      likedPostIds.splice(index, 1);
     }
   });
 };
 
 const removeLikes = () => {
   posts.forEach((post) => {
-    if (likedPostIds.includes(post.id)) {
+    if (arrPerDislike.includes(post.id)) {
       post.likes = post.likes - 1;
       let newLikeEl = document.getElementById(`like-counter-${post.id}`);
       newLikeEl.innerText = post.likes;
+      let index = arrPerDislike.indexOf(postIdFrom);
+      arrPerDislike.splice(index, 1);
     }
   });
 };
