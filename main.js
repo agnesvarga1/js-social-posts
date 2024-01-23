@@ -101,11 +101,48 @@ posts.forEach((postItem, index) => {
 </div>
 `;
 });
-
+console.log("Before click:", posts);
 const allLikeBtns = document.querySelectorAll(".js-like-button");
-
+const likedPostIds = [];
 allLikeBtns.forEach((btn) => {
+  let btnClicked = false;
   btn.addEventListener("click", () => {
-    btn.classList.toggle("like-button--liked");
+    postIdFrom = btn.getAttribute("data-postId");
+    if (btnClicked === false) {
+      btnClicked = true;
+      btn.classList.add("like-button--liked");
+      likedPostIds.push(postIdFrom);
+
+      addLike();
+    } else {
+      removeLike();
+      btnClicked = false;
+      btn.classList.remove("like-button--liked");
+      let index = likedPostIds.indexOf(postIdFrom);
+      likedPostIds.splice(index, 1);
+    }
   });
 });
+
+const addLike = () => {
+  likedPostIds.forEach((item, index) => {
+    posts.forEach((post) => {
+      if (index + 1 === post.id) {
+        post.likes = post.likes + 1;
+      }
+    });
+  });
+  console.log("After addFN:", posts);
+};
+
+const removeLike = () => {
+  likedPostIds.forEach((item, index) => {
+    posts.forEach((post) => {
+      if (index + 1 === post.id) {
+        post.likes = post.likes - 1;
+      }
+    });
+  });
+
+  console.log("After remove", posts);
+};
